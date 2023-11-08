@@ -2,7 +2,6 @@
 import pickle
 import matplotlib.backends.backend_pdf
 from matplotlib import pyplot as plt
-from utils import labels_to_dict
 from os.path import exists
 
 # third pary imports
@@ -15,7 +14,8 @@ sns.set_style('whitegrid')
 from sklearn.mixture import GaussianMixture
 
 # local imports
-from mutual_information import get_cluster_mean_mi
+from .mutual_information import get_cluster_mean_mi
+from .utils import labels_to_dict
 
 def find_maxlocs(means):
     """

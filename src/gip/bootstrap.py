@@ -1,7 +1,7 @@
 import pandas as pd
 from numpy.random import default_rng
 from sklearn.mixture import GaussianMixture
-from utils import labels_to_dict
+from .utils import labels_to_dict
 import multiprocessing as mp
 import json
 from os.path import exists

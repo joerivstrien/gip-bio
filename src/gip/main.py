@@ -1,9 +1,9 @@
 """
 contains code that combines all steps for a complete analysis
 """
-import mixture_modelling as mm
-import bootstrap as bs
-import process_normalise as pn
+from . import mixture_modelling as mm
+from . import bootstrap as bs
+from . import process_normalise as pn
 from scipy.stats import zscore
 import multiprocessing as mp
 
