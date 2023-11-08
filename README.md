@@ -14,14 +14,14 @@
 - [Python Package](#python-package)
 - [License](#licence)
 - [Issues](#issues)
-- [Citing CompaCt](#citing-compact)
+- [Citing GIP](#citing-gip)
 
 
 ## About
 
 --needs an about description--
 
-For a more complete description of the software and its applications, please refer to the manuscript (see [here](#citing-compact)).
+For a more complete description of the software and its applications, please refer to the manuscript (see [here](#citing-gip)).
 
 ## Installation
 
@@ -55,7 +55,7 @@ installation with pip ensures the python-based dependencies are automatically in
 ### complexome profiling data
 
 -- description needs to be fixed/completed -- 
-A matrix of expression/abundance data, like a complexome profile. These data should be provided as a tab-separated text file, with the first row containing identifiers. An example of a file containing protein protein expression data is available [here](https://github.com/joerivstrien/gip-bio/blob/main/example_data/CRS17_genenames_renamed.tsv)
+A matrix of expression/abundance data, like a complexome profile. These data should be provided as a tab-separated text file, with the first row containing identifiers. An example of a file containing protein protein expression data is available [here](https://github.com/joerivstrien/gip-bio/blob/main/example_data/test_complexome_profile.tsv)
 
 
 ### protein annotation file
