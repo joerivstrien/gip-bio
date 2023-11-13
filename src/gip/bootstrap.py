@@ -15,7 +15,50 @@ def run_bootstrap(data,original_clusters,subsample_size=None,n=500,
                   processes=1,score_fn=None,membership_fn=None,
                   seed=None):
     """
-    """    
+    perform bootstrapped reclustering of data
+
+    Args:
+        data (pd.DataFrame): input data to perform resampling and clustering on
+        original_clusters (dict of lists): 
+            clusters resulting from original clustering
+            each entry (cluster) contains list with protein ids (string)
+        subsample_size (int, optional): Defaults to None.
+            Size of subsample taken when resampling
+        n (int, optional): Defaults to 500.
+            number of bootstrap iterations
+        replacement (bool, optional): Defaults to False (without).
+            to perform resampling with or without replacement
+        processes (int, optional):Defaults to 1.
+            number of threads/processes
+        score_fn (string, optional): Defaults to None.
+            filename to store or retrieve bootstrap scores
+            if both score_fn and membership_fn files already exist:
+                results retrieved from file, bootstrapping skipped
+            if file does not exist yet:
+                bootstrapping results are stored in these files
+        membership_fn (string, optional): Defaults to None.
+            filename to store or retrieve bootstrapped cluster membership
+            if both score_fn and membership_fn files already exist:
+                results retrieved from file, bootstrapping skipped
+            if file does not exist yet:
+                bootstrapping results are stored in these files
+        seed (int, optional): Defaults to None.
+            random seed used for resampling and clustering
+
+    Returns:
+        dict: bootstrapping results
+            scores: pd.DataFrame
+                overlap scores of each original cluster with best
+                fitting bootstrapped cluster, for each iteration
+                columns are orig clusters, rows are iterations
+            memberships: dict of dicts
+                frequency with which each protein is part of each cluster
+                each outer entry is a cluster
+                nested dicts are each member with associated frequency                
+            stabilities:
+                
+            flat_freqs: 
+    """
     if (not score_fn) or (not membership_fn):
         print('performing bootstrap')
         scores,memberships = bootstrap_cluster_result(
