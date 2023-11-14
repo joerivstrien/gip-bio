@@ -15,7 +15,7 @@ def run_bootstrap(data,original_clusters,subsample_size=None,n=500,
                   processes=1,score_fn=None,membership_fn=None,
                   seed=None):
     """
-    perform bootstrapped reclustering of data
+    perform bootstrapping workflow, repeated reclustering of data
 
     Args:
         data (pd.DataFrame): input data to perform resampling and clustering on
@@ -55,9 +55,10 @@ def run_bootstrap(data,original_clusters,subsample_size=None,n=500,
                 frequency with which each protein is part of each cluster
                 each outer entry is a cluster
                 nested dicts are each member with associated frequency                
-            stabilities:
-                
-            flat_freqs: 
+            stabilities: dict
+                stores cluster stability (float, mean overlap) per cluster
+            flat_freqs: dict
+                stores the frequency of each protein in their original cluster
     """
     if (not score_fn) or (not membership_fn):
         print('performing bootstrap')
@@ -101,6 +102,14 @@ def run_bootstrap(data,original_clusters,subsample_size=None,n=500,
 
 def process_bootstrap_results(scores,memberships,original_clusters):
     """
+    processes bootstrap results to metrics for each cluster and protein
+
+
+    Returns:
+        stabilities: dict
+            stores cluster stability (float, mean overlap) per cluster
+        flat_freqs: dict
+            stores the frequency of each protein in their original cluster
     """
 
     # compute cluster stabilities from bootstrap scores
@@ -117,14 +126,21 @@ def process_bootstrap_results(scores,memberships,original_clusters):
   
 def bootstrap_cluster_result(data,original_clusters, subsample_size=None,
                              replacement=False,n=500,processes=1,seed=None):
-    """_summary_
+    """
+    perform bootstrapped reclustering on initial clustering and data
 
-    Args:
-        data (_type_): _description_
-        original_clusters (_type_): _description_
-        cluster_func (_type_): _description_
-        subsample_size (_type_, optional): _description_. Defaults to None.
-        n (int, optional): _description_. Defaults to 500.
+    see run_bootstrap documentation for parameter descriptions
+
+    Returns:
+        tuple: (scores, memberships)
+            scores: pd.DataFrame
+                overlap scores of each original cluster with best
+                fitting bootstrapped cluster, for each iteration
+                columns are orig clusters, rows are iterations
+            memberships: dict of dicts
+                frequency with which each protein is part of each cluster
+                each outer entry is a cluster
+                nested dicts are each member with associated frequency                
     """
     rng = default_rng(seed=seed)
     n_clusts = len(original_clusters)
@@ -187,7 +203,7 @@ def load_bootstrap_scores(fname):
 
 def resample_data(data, subsample_size,replacement,rng):
     """
-    resampling subsamples from data, WITH REPLACEMENT
+    taking a subsample of the data (columns), of given size
     """
     choice = rng.choice(data.columns.values,subsample_size,
                         replace=replacement)

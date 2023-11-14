@@ -15,6 +15,85 @@ def perform_bootstrapped_GMM(data,clust_ratio,annot_df=None,
     min_size=2,min_maxloc=9,mi_thresh=0,seed=None,
     clusttable_fn = None, membertable_fn = None, pdf_fn=None):
 
+    """
+    Main function to run full GIP clustering workflow on dataset 
+
+    Args:
+        data (pd.DataFrame): 
+            input data to perform resampling and clustering on
+            "raw" protein abundances intensities per fraction
+            index should contain protein identifiers
+        clust_ratio (float): to determine the number of output clusters
+            ratio of the number of clusters to proteins
+            a ratio of 0.5 would mean one cluster per two detected 
+            proteins in the dataset
+        annot_df (pd.DataFrame, optional): dataframe with protein annotations
+            row index values should match protein ids in "data"
+            columns contain additional annotations of proteins
+            that will be included in the GIP output
+        covar_type (string, optional): defaults to 'diag'
+            the covar_type used in GMM clustering, as described
+            in sklearn.mixture.GaussianMixture
+        n_init (int, optional): defaults to 5
+            the number of initializations used in GMM clustering,
+            as described in sklearn.mixture.GaussianMixture
+        fit_fn (str, optional): 
+            filepath to store pickle of initial clustering fit
+            if the file already exists it will load the fit from
+            this file rather than running initial clustering
+        n_bootstraps (int, optional):
+            number of bootstrap iterations to perform
+        bs_subsample_size (int, optional): Defaults to None.
+            Size of subsample taken when resampling
+        bs_subsample_replacement (bool, optional): Default False (without).
+            to perform resampling with or without replacement 
+        bs_processes (int, optional):Defaults to 1.
+            number of threads/processes for bootstrapping procedure
+        bs_score_fn (string, optional): Defaults to None.
+            filename to store or retrieve bootstrap scores
+            if both score_fn and membership_fn files already exist:
+                results retrieved from file, bootstrapping skipped
+            if file does not exist yet:
+                bootstrapping results are stored in these files
+        bs_mem_fn (string, optional): Defaults to None.
+            filename to store or retrieve bootstrapped cluster membership
+            if both score_fn and membership_fn files already exist:
+                results retrieved from file, bootstrapping skipped
+            if file does not exist yet:
+                bootstrapping results are stored in these files
+        min_size (int, optional): Defaults to 2
+            minimum cluster size. any smaller clusters are filtered out
+        min_maxloc (int, optional): defaults to 9
+            clusters with its max peak at fraction number lower than
+            'min_maxloc' are filtered out
+        mi_thresh (float, optional): defaults to 0
+            clusters with a average mutual information lower than
+            'mi_thresh' are filtered out
+        seed (int, optional): Defaults to None.
+            random seed used for resampling and clustering
+        clusttable_fn (str, optional):
+            if provided will save table with output clusters to given
+            filepath
+        membertable_fn (str, optional):
+            if provided will save table with output cluster members to
+            given filepath
+        pdf_fn (str, optional):
+            if provided will save a pdf with plots for all output 
+            clusters to given filepath.
+
+    Returns: dict with following entries
+        clust_res (dict): dict with initial clustering results,
+        bs_res (dict): dict with bootstrapping results,
+        clusttable (pd.DataFrame): 
+            output table with overview of result clusters
+        membertable (pd.DataFrame): 
+            output table with overview of clustered proteins
+        cluster_flows (dict):
+            contains degree of member overlap between clusters during
+            bootstrapping procedure, for all clusters that have 
+            overlapping cluster members during bootstrapping
+    """
+
     # set multiprocessing method so mp works with sklearn models
     try:
         mp.set_start_method('forkserver')
