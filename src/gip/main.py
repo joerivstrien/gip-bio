@@ -8,7 +8,7 @@ from scipy.stats import zscore
 import multiprocessing as mp
 
 
-def perform_bootstrapped_GMM(data,clust_ratio,annot_df=None,
+def main(data,clust_ratio,annot_df=None,
     covar_type='diag',n_init=5,fit_fn=None,n_bootstraps=500,
     bs_subsample_size=None,bs_subsample_replacement=False,
     bs_processes=1,bs_score_fn=None,bs_mem_fn=None,
