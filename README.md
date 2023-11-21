@@ -25,13 +25,16 @@ For a more complete description of the software and its applications, please ref
 
 ## Installation
 
-CompaCt is implemented as a flexible python package, which requires installing the package and its dependencies from the python package index (pip).
+GIP is implemented as a flexible python package, which requires installing the package and its dependencies from the python package index (pip).
 
 **dependencies**
-- [Python >= 3.7](https://www.python.org/)
+- [Python 3](https://www.python.org/)
 - [pandas](https://pandas.pydata.org/)
 - [numpy](https://numpy.org/)
-- NEEDS FULL LIST OF REQUIREMENTS
+- [scikit-learn](https://scikit-learn.org/)
+- [scipy](https://scipy.org/)
+- [matplotlib](https://matplotlib.org/)
+- [seaborn](https://seaborn.pydata.org/)
 
 ### pip
 installation with pip ensures the dependencies are automatically installed alongside GIP.
