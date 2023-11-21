@@ -73,11 +73,12 @@ To provide additional protein annotations aside from their identifiers to the ou
 
     # parse complexome profile and protein annotation file
     prof = prn.parse_profile('path/to/profile.tsv')
-    annot = pd.read_csv('path/to/annot_fn.tsv',sep='\t)
+    annot = pd.read_csv('path/to/annot_fn.tsv',sep='\t',index_col=0)
 
     # set ratio of clusters relative to number of detected proteins
     clust_ratio = 0.5
 
+    # to run a standard run, using 4 threads for the bootstrapping
     gip_results = main(prof, clust_ratio, annot_df=annot, bs_processes=4)
 
 
