@@ -67,20 +67,31 @@ To provide additional protein annotations aside from their identifiers to the ou
 
 
 ## Running a complete GIP analysis
+
+Below is an example script to run a complete GIP analysis from start to finish. Please be aware that, when running GIP from a python script it is important to ensure the code is run from within an "if \__name__ == "\__main__":" block, as in the example below. Running the GIP code outside of a block could result in RuntimeErrors related to multiprocessing, as depending on the multiprocessing start-method each time a new process is started by python it reloads the main module.
+
+The complete results of a GIP run are returned as a dictionary from the main function. Which can then be explored, saved etc. Additionally, when using the "clusttable_fn" and "membertable_fn" parameters, the main result tables are saved to files. These contain detailed information of the clusters and clustered proteins, respectively. 
+
     from gip.main import main
     import gip.process_normalise as prn
     import pandas as pd
 
-    # parse complexome profile and protein annotation file
-    prof = prn.parse_profile('path/to/profile.tsv')
-    annot = pd.read_csv('path/to/annot_fn.tsv',sep='\t',index_col=0)
+    if __name__ == "__main__":
+      # parse complexome profile and protein annotation file
+      prof = prn.parse_profile('path/to/profile.tsv')
+      annot = pd.read_csv('path/to/annot_fn.tsv',sep='\t',index_col=0)
 
-    # set ratio of clusters relative to number of detected proteins
-    clust_ratio = 0.5
+      # set ratio of clusters relative to number of detected proteins
+      clust_ratio = 0.5
 
-    # to run a standard run, using 4 threads for the bootstrapping
-    gip_results = main(prof, clust_ratio, annot_df=annot, bs_processes=4)
-
+      # A standard run, using 4 threads for the bootstrapping
+      # the main result tables, containing details regarding the clusters and
+      # clustered proteins are saved to tsv files.
+      # for this example only 4 bootstrap iterations are run to save time.
+      gip_results = main(prof, clust_ratio, annot_df=annot, bs_processes=4,
+                         n_bootstraps = 4,
+                         clusttable_fn='./clusttable.tsv',
+                         membertable_fn='./membertable.tsv')
 
 ## Output
 
